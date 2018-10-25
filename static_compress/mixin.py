@@ -18,7 +18,7 @@ METHOD_MAPPING = {
 }
 
 
-class CompressMixin:
+class CompressMixin(object):
     allowed_extensions = []
     compress_methods = []
     keep_original = True

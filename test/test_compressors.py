@@ -1,5 +1,6 @@
 import unittest
 import gzip
+import zlib
 from io import BytesIO
 
 from static_compress.compressors import BrotliCompressor, ZopfliCompressor, ZlibCompressor
@@ -43,5 +44,5 @@ class ZlibCompressorTestCase(unittest.TestCase):
         self.assertGreater(out.size, 0)
         self.assertLessEqual(out.size, len(content))
 
-        result = gzip.decompress(out.read())
+        result = gzip.zlib.decompress(out.read())
         self.assertEqual(result, content)

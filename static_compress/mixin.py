@@ -72,7 +72,8 @@ class CompressMixin:
 
     def post_process(self, paths, dry_run=False, **options):
         if hasattr(super(), "post_process"):
-            yield from super().post_process(paths, dry_run, **options)
+            for sup in super().post_process(paths, dry_run, **options):
+                yield sup
 
         if dry_run:
             return

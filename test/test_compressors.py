@@ -3,23 +3,23 @@ import gzip
 import zlib
 from io import BytesIO
 
-from static_compress.compressors import BrotliCompressor, ZopfliCompressor, ZlibCompressor
+from static_compress.compressors import BrotliCompressor, ZlibCompressor # ZopfliCompressor, 
 import brotli
 
 content = b"a" * 100
 
 
-class ZopfliCompressorTestCase(unittest.TestCase):
-    def test_compress(self):
-        file = BytesIO(content)
+# class ZopfliCompressorTestCase(unittest.TestCase):
+#     def test_compress(self):
+#         file = BytesIO(content)
 
-        compressor = ZopfliCompressor()
-        out = compressor.compress("", file)
-        self.assertGreater(out.size, 0)
-        self.assertLessEqual(out.size, len(content))
+#         compressor = ZopfliCompressor()
+#         out = compressor.compress("", file)
+#         self.assertGreater(out.size, 0)
+#         self.assertLessEqual(out.size, len(content))
 
-        result = gzip.decompress(out.read())
-        self.assertEqual(result, content)
+#         result = zlib.decompress(out.read())
+#         self.assertEqual(result, content)
 
 
 class BrotliCompressorTestCase(unittest.TestCase):

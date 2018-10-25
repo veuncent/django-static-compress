@@ -9,9 +9,9 @@ from . import compressors
 __all__ = ["CompressMixin"]
 
 
-DEFAULT_METHODS = ["gz", "br"]
+DEFAULT_METHODS = ["gz+zlib", "br"]
 METHOD_MAPPING = {
-    "gz": compressors.ZopfliCompressor,
+    # "gz": compressors.ZopfliCompressor,
     "br": compressors.BrotliCompressor,
     "gz+zlib": compressors.ZlibCompressor,
     # gz+zlib and gz cannot be used at the same time, because they produce the same file extension.

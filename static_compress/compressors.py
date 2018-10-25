@@ -21,8 +21,8 @@ class ZlibCompressor:
         return ContentFile(gzip.zlib.compress(file.read()))
 
 
-class ZopfliCompressor:
-    extension = "gz"
+# class ZopfliCompressor:
+#     extension = "gz"
 
-    def compress(self, path, file):
-        return ContentFile(zopfli.compress(file.read()))
+#     def compress(self, path, file):
+#         return ContentFile(zopfli.compress(file.read()))

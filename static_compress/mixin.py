@@ -26,7 +26,7 @@ class CompressMixin:
     minimum_kb = 0
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(CompressMixin, self).__init__(*args, **kwargs)
         # We access Django settings lately here, to allow our app to be imported without
         # defining DJANGO_SETTINGS_MODULE.
         from django.conf import settings
@@ -56,23 +56,23 @@ class CompressMixin:
 
     def get_accessed_time(self, name):
         if self.keep_original:
-            return super().get_accessed_time(name)
+            return super(CompressMixin, self).get_accessed_time(name)
         return self._datetime_from_timestamp(getatime(self.get_alternate_compressed_path(name)))
 
     def get_created_time(self, name):
         if self.keep_original:
-            return super().get_created_time(name)
+            return super(CompressMixin, self).get_created_time(name)
         return self._datetime_from_timestamp(getctime(self.get_alternate_compressed_path(name)))
 
     def get_modified_time(self, name):
         if self.keep_original:
-            return super().get_modified_time(name)
+            return super(CompressMixin, self).get_modified_time(name)
         alt = self.get_alternate_compressed_path(name)
         return self._datetime_from_timestamp(getmtime(alt))
 
     def post_process(self, paths, dry_run=False, **options):
-        if hasattr(super(), "post_process"):
-            for sup in super().post_process(paths, dry_run, **options):
+        if hasattr(super(CompressMixin, self), "post_process"):
+            for sup in super(CompressMixin, self).post_process(paths, dry_run, **options):
                 yield sup
 
         if dry_run:

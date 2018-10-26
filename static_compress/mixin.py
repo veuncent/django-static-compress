@@ -44,6 +44,7 @@ class CompressMixin(object):
         if "gz" in valid and "gz+zlib" in valid:
             raise ImproperlyConfigured("STATIC_COMPRESS_METHODS: gz and gz+zlib cannot be used at the same time.")
         self.compressors = [METHOD_MAPPING[k]() for k in valid]
+        
         print "Using compressors: [{0}]".format(', '.join(str(c) for c in self.compressors))
 
     def get_alternate_compressed_path(self, name):
@@ -94,8 +95,6 @@ class CompressMixin(object):
             dest_path = self._get_dest_path(path)
             with self._open(dest_path) as file:
                 for compressor in self.compressors:
-                    if dest_path.endswith('utils.js'):
-                        print "Handling compressor: {0}".format(compressor)
                     dest_compressor_path = "{}.{}".format(dest_path, compressor.extension)
                     # Check if the original file has been changed.
                     # If not, no need to compress again.
@@ -106,18 +105,11 @@ class CompressMixin(object):
                     except OSError:
                         file_is_unmodified = False
                     if file_is_unmodified:
-                        if dest_path.endswith('utils.js'):
-                            print "Skipping unmodified file: {0}".format(path)
                         continue
-
-                    if dest_path.endswith('utils.js'):
-                        print "Post-processing modified file: {0}".format(path)
 
                     # Delete old gzip file, or Nginx will pick the old file to serve.
                     # Note: Django won't overwrite the file, so we have to delete it ourselves.
                     if self.exists(dest_compressor_path):
-                        if dest_path.endswith('utils.js'):
-                            print "Deleting existing file: {0}".format(dest_compressor_path)
                         self.delete(dest_compressor_path)
                     out = compressor.compress(path, file)
 

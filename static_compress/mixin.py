@@ -54,7 +54,7 @@ class CompressMixin(object):
                 path = self.path("{}.{}".format(name, ext))
             if os.path.exists(path):
                 return path
-        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), path)
+        raise IOError(errno.ENOENT, os.strerror(errno.ENOENT), path)
 
     def get_accessed_time(self, name):
         if self.keep_original:
@@ -100,7 +100,7 @@ class CompressMixin(object):
                     try:
                         dest_mtime = self._datetime_from_timestamp(getmtime(full_compressed_path))
                         file_is_unmodified = dest_mtime.replace(microsecond=0) >= src_mtime.replace(microsecond=0)
-                    except FileNotFoundError:
+                    except IOError:
                         file_is_unmodified = False
                     if file_is_unmodified:
                         continue

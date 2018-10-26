@@ -31,7 +31,7 @@ class CompressMixin(object):
         # defining DJANGO_SETTINGS_MODULE.
         from django.conf import settings
 
-        self.allowed_extensions = getattr(settings, "STATIC_COMPRESS_FILE_EXTS", ["js", "css", "svg"])
+        self.allowed_extensions = getattr(settings, "STATIC_COMPRESS_FILE_EXTS", ["js", "css", "svg", "html", "txt", "xml"])
         self.compress_methods = getattr(settings, "STATIC_COMPRESS_METHODS", DEFAULT_METHODS)
         self.keep_original = getattr(settings, "STATIC_COMPRESS_KEEP_ORIGINAL", True)
         self.minimum_kb = getattr(settings, "STATIC_COMPRESS_MIN_SIZE_KB", 30)

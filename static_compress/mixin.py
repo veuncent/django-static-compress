@@ -80,7 +80,6 @@ class CompressMixin(object):
                 yield sup
 
         if dry_run:
-            print "dry_run = true, returning..."
             return
 
         for name in paths.keys():
@@ -142,9 +141,5 @@ class CompressMixin(object):
     def _is_file_allowed(self, file):
         for extension in self.allowed_extensions:
             if file.endswith("." + extension):
-                if file.endswith('utils.js'):
-                    print "File selected for post-processing: {0}".format(file)
                 return True
-        if file.endswith('utils.js'):
-            print "Skipping post-processing of: {0}".format(file)
         return False

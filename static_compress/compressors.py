@@ -1,10 +1,10 @@
 import gzip
 
 import brotli
-from zopfli import gzip as zopfli
+# from zopfli import gzip as zopfli
 from django.core.files.base import ContentFile
 
-__all__ = ["BrotliCompressor", "ZlibCompressor", "ZopfliCompressor"]
+__all__ = ["BrotliCompressor", "ZlibCompressor"]  # , "ZopfliCompressor"
 
 
 class BrotliCompressor:

@@ -1,8 +1,8 @@
 # Django-static-compress
 
+This is a Python 2.7 port forked from Manatsawin Hanmongkolchai's [DJango-Static-Compress](https://github.com/whs/django-static-compress).  
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Travis Status](https://travis-ci.org/whs/django-static-compress.svg)](https://travis-ci.org/whs/django-static-compress)
-[![PyPi](https://img.shields.io/pypi/v/django-static-compress.svg)](https://pypi.python.org/pypi/django-static-compress)
 
 Precompress your static files automatically with [Brotli](https://github.com/google/brotli) and [Zopfli](https://github.com/obp/zopfli)
 
@@ -58,7 +58,7 @@ After compressing the static files, _django-static-compress_ still leaves the or
 
 If the file is too small, it isn't worth compressing. You can change the minimum size in KiB at which file should be compressed, by changing `STATIC_COMPRESS_MIN_SIZE_KB`.
 
-By default, _django-static-compress_ use Zopfli to compress to gzip. Zopfli compress better than gzip, but will take more time to compress. If you want to create gzip file with built-in zlib compressor, replace `'gz'` with `'gz+zlib'` in `STATIC_COMPRESS_METHODS`.
+<!-- By default, _django-static-compress_ use Zopfli to compress to gzip. Zopfli compress better than gzip, but will take more time to compress. If you want to create gzip file with built-in zlib compressor, replace `'gz'` with `'gz+zlib'` in `STATIC_COMPRESS_METHODS`. -->
 
 ## File size reduction
 
@@ -87,7 +87,6 @@ To contribute to this project:
 6.  Run integration test: `cd integration_test; python manage.py test`
 7.  Commit. Pre-commit will warn if you have any changes.
 8.  Submit pull request on GitHub
-9.  Make sure Travis tests pass.
 
 ## License
 

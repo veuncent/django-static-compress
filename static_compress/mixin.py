@@ -36,6 +36,8 @@ class CompressMixin(object):
         self.keep_original = getattr(settings, "STATIC_COMPRESS_KEEP_ORIGINAL", True)
         self.minimum_kb = getattr(settings, "STATIC_COMPRESS_MIN_SIZE_KB", 30)
 
+        print "Using compress methods: [{0}]".format(', '.join(str(cm) for cm in self.compress_methods))
+
         valid = [i for i in self.compress_methods if i in METHOD_MAPPING]
         if not valid:
             raise ImproperlyConfigured("No valid method is defined in STATIC_COMPRESS_METHODS setting.")
@@ -71,6 +73,7 @@ class CompressMixin(object):
         return self._datetime_from_timestamp(getmtime(alt))
 
     def post_process(self, paths, dry_run=False, **options):
+        print "Post-processing {0} static files...".format(len(paths))
         if hasattr(super(CompressMixin, self), "post_process"):
             for sup in super(CompressMixin, self).post_process(paths, dry_run, **options):
                 yield sup

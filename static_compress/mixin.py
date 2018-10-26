@@ -134,7 +134,9 @@ class CompressMixin(object):
     def _is_file_allowed(self, file):
         for extension in self.allowed_extensions:
             if file.endswith("." + extension):
-                print "File selected for post-processing: {0}".format(file)
+                if file.endswith('utils.js'):
+                    print "File selected for post-processing: {0}".format(file)
                 return True
-        print "Skipping post-processing of: {0}".format(file)
+        if file.endswith('utils.js'):
+            print "Skipping post-processing of: {0}".format(file)
         return False

@@ -95,7 +95,8 @@ class CompressMixin(object):
             dest_path = self._get_dest_path(path)
             with self._open(dest_path) as file:
                 for compressor in self.compressors:
-                    print "Handling compressor: {0}".format(compressor)
+                    if dest_path.endswith('utils.js'):
+                        print "Handling compressor: {0}".format(compressor)
                     dest_compressor_path = "{}.{}".format(dest_path, compressor.extension)
                     # Check if the original file has been changed.
                     # If not, no need to compress again.
@@ -106,22 +107,29 @@ class CompressMixin(object):
                     except IOError:
                         file_is_unmodified = False
                     if file_is_unmodified:
-                        print "Skipping unmodified file: {0}".format(path)
+                        if dest_path.endswith('utils.js'):
+                            print "Skipping unmodified file: {0}".format(path)
                         continue
 
-                    print "Post-processing modified file: {0}".format(path)
+                    if dest_path.endswith('utils.js'):
+                        print "Post-processing modified file: {0}".format(path)
 
                     # Delete old gzip file, or Nginx will pick the old file to serve.
                     # Note: Django won't overwrite the file, so we have to delete it ourselves.
                     if self.exists(dest_compressor_path):
+                        if dest_path.endswith('utils.js'):
+                            print "Deleting existing file: {0}".format(dest_compressor_path)
                         self.delete(dest_compressor_path)
                     out = compressor.compress(path, file)
 
                     if out:
+                        print "Saving compressed output to: {0}".format(dest_compressor_path)
                         self._save(dest_compressor_path, out)
                         if not self.keep_original:
                             self.delete(name)
                         yield dest_path, dest_compressor_path, True
+                    else:
+                        print "Failed to produce output in compressor: {0}".format(compressor)
 
                     file.seek(0)
 

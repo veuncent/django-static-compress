@@ -44,6 +44,7 @@ class CompressMixin(object):
         if "gz" in valid and "gz+zlib" in valid:
             raise ImproperlyConfigured("STATIC_COMPRESS_METHODS: gz and gz+zlib cannot be used at the same time.")
         self.compressors = [METHOD_MAPPING[k]() for k in valid]
+        print "Using compressors: [{0}]".format(', '.join(str(c) for c in self.compressors))
 
     def get_alternate_compressed_path(self, name):
         for compressor in self.compressors:
@@ -79,6 +80,7 @@ class CompressMixin(object):
                 yield sup
 
         if dry_run:
+            print "dry_run = true, returning..."
             return
 
         for name in paths.keys():
@@ -93,6 +95,7 @@ class CompressMixin(object):
             dest_path = self._get_dest_path(path)
             with self._open(dest_path) as file:
                 for compressor in self.compressors:
+                    print "Handling compressor: {0}".format(compressor)
                     dest_compressor_path = "{}.{}".format(dest_path, compressor.extension)
                     # Check if the original file has been changed.
                     # If not, no need to compress again.
@@ -103,7 +106,10 @@ class CompressMixin(object):
                     except IOError:
                         file_is_unmodified = False
                     if file_is_unmodified:
+                        print "Skipping unmodified file: {0}".format(path)
                         continue
+
+                    print "Post-processing modified file: {0}".format(path)
 
                     # Delete old gzip file, or Nginx will pick the old file to serve.
                     # Note: Django won't overwrite the file, so we have to delete it ourselves.
@@ -128,5 +134,7 @@ class CompressMixin(object):
     def _is_file_allowed(self, file):
         for extension in self.allowed_extensions:
             if file.endswith("." + extension):
+                print "File selected for post-processing: {0}".format(file)
                 return True
+        print "Skipping post-processing of: {0}".format(file)
         return False

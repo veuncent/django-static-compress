@@ -129,7 +129,7 @@ class CompressMixin(object):
                             self.delete(name)
                         yield dest_path, dest_compressor_path, True
                     else:
-                        print "Failed to produce output in compressor: {0}".format(compressor)
+                        raise IOError("Failed to produce output in compressor: {0}".format(compressor))
 
                     file.seek(0)
 

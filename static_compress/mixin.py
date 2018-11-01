@@ -6,6 +6,11 @@ from django.core.exceptions import ImproperlyConfigured
 
 from . import compressors
 
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 __all__ = ["CompressMixin"]
 
 
@@ -36,7 +41,7 @@ class CompressMixin(object):
         self.keep_original = getattr(settings, "STATIC_COMPRESS_KEEP_ORIGINAL", True)
         self.minimum_kb = getattr(settings, "STATIC_COMPRESS_MIN_SIZE_KB", 30)
 
-        print "Using compress methods: [{0}]".format(', '.join(str(cm) for cm in self.compress_methods))
+        logger.info("Using compress methods: [{0}]".format(', '.join(str(cm) for cm in self.compress_methods)))
 
         valid = [i for i in self.compress_methods if i in METHOD_MAPPING]
         if not valid:
@@ -45,7 +50,7 @@ class CompressMixin(object):
             raise ImproperlyConfigured("STATIC_COMPRESS_METHODS: gz and gz+zlib cannot be used at the same time.")
         self.compressors = [METHOD_MAPPING[k]() for k in valid]
         
-        print "Using compressors: [{0}]".format(', '.join(str(c) for c in self.compressors))
+        logger.info("Using compressors: [{0}]".format(', '.join(str(c.__name__) for c in self.compressors)))
 
     def get_alternate_compressed_path(self, name):
         for compressor in self.compressors:
@@ -75,7 +80,7 @@ class CompressMixin(object):
         return self._datetime_from_timestamp(getmtime(alt))
 
     def post_process(self, paths, dry_run=False, **options):
-        print "Post-processing {0} static files...".format(len(paths))
+        logger.info("Post-processing {0} static files...".format(len(paths)))
         if hasattr(super(CompressMixin, self), "post_process"):
             for sup in super(CompressMixin, self).post_process(paths, dry_run, **options):
                 yield sup
@@ -114,7 +119,7 @@ class CompressMixin(object):
                     out = compressor.compress(path, file)
 
                     if out:
-                        print "Saving compressed output to: {0}".format(dest_compressor_path)
+                        logger.info("Saving compressed output to: {0}".format(dest_compressor_path))
                         self._save(dest_compressor_path, out)
                         if not self.keep_original:
                             self.delete(name)
